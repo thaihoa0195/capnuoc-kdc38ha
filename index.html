@@ -103,12 +103,12 @@ const pc=p=>PB.find(b=>p<b[0])[1];
 const DNC={100:'#e2e8f0',150:'#22d3ee',200:'#818cf8',250:'#e879f9',300:'#f472b6'},DNW={100:2,150:3,200:4,250:5,300:6};
 const TC={nha:'#fbbf24',kt:'#fbbf24',cc:'#f87171',truong:'#60a5fa',cv:'#4ade80',ubnd:'#c084fc',xlnt:'#9ca3af',den:'#d6a77a'};
 const f1=v=>v.toFixed(1).replace('.',','),hh=h=>String(h).padStart(2,'0')+':00';
-const st={sc:'A',h:18,play:null,on:{thua:1,gt:1,ong:1,nut:1,dh:1,nen:1}};
+const st={sc:'A',h:18,play:null,on:{thua:1,ld:1,vh:1,hm:1,ong:1,nut:1,dh:1,nen:1}};
 (async()=>{
 try{
  const [vt,vg,vo,vn,vd]=await Promise.all([get('v_thua'),get('v_giaothong'),get('v_ong'),get('v_nut'),get('v_dongho')]);
  vo.sort((a,b)=>+a.id.slice(1)-+b.id.slice(1));
- const polys=g=>g.type=='Polygon'?[g.coordinates[0]]:g.coordinates.map(p=>p[0]);
+ const polys=g=>g.type=='Polygon'?[g.coordinates]:g.coordinates;
  const ll=c=>[c[1],c[0]];
  const NI={};vn.forEach((n,i)=>NI[n.id]=i);
  const DHT=NI['DHT'];
@@ -120,10 +120,11 @@ try{
  const pmin=k=>SIM[k].map(x=>Math.min(...x.P));
  const map=L.map('map',{maxZoom:21}).setView([10.8255,106.6165],17);
  const base=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:21,maxNativeZoom:19,attribution:'Esri'}).addTo(map);
- ['thua','gt','ong','nut','dh'].forEach((n,i)=>map.createPane(n).style.zIndex=410+i*10);
- const G={thua:L.layerGroup(),gt:L.layerGroup(),ong:L.layerGroup(),nut:L.layerGroup(),dh:L.layerGroup()};
- vg.forEach(r=>polys(r.geometry).forEach(c=>L.polygon(c.map(ll),{pane:'gt',stroke:false,fillColor:'#0f172a',fillOpacity:.55,interactive:false}).addTo(G.gt)));
- vt.forEach(r=>polys(r.geometry).forEach(c=>L.polygon(c.map(ll),{pane:'thua',color:'#0b1220',weight:.6,fillColor:TC[r.loai]||'#999',fillOpacity:.45,interactive:false}).addTo(G.thua)));
+ ['ld','vh','hm','thua','ong','nut','dh'].forEach((n,i)=>map.createPane(n).style.zIndex=410+i*10);
+ const G={ld:L.layerGroup(),vh:L.layerGroup(),hm:L.layerGroup(),thua:L.layerGroup(),ong:L.layerGroup(),nut:L.layerGroup(),dh:L.layerGroup()};
+ const GT={LD:['ld','#475569',.62],LDVH:['vh','#e5e7eb',.55],HEM:['hm','#fb923c',.55]};
+ vg.forEach(r=>{const o=GT[r.loai_mat];if(o)polys(r.geometry).forEach(rs=>L.polygon(rs.map(x=>x.map(ll)),{pane:o[0],color:'#0b1220',weight:.4,fillColor:o[1],fillOpacity:o[2],interactive:false}).addTo(G[o[0]]))});
+ vt.forEach(r=>polys(r.geometry).forEach(c=>L.polygon(c.map(x=>x.map(ll)),{pane:'thua',color:'#0b1220',weight:.6,fillColor:TC[r.loai]||'#999',fillOpacity:.45,interactive:false}).addTo(G.thua)));
  const PL=vo.map((r,i)=>{const l=L.polyline(r.geometry.coordinates.map(ll),{pane:'ong',lineCap:'round'}).addTo(G.ong);
   l.bindPopup(()=>{const s=SIM[st.sc][st.h];return `<div class="pp"><b>Ống ${r.id}</b><div>DN <em>${DN[st.sc][i]}</em> · ${Math.round(+r.chieu_dai)} m</div><div>v <em>${s.V[i].toFixed(2).replace('.',',')}</em> m/s · Q <em>${f1(Math.abs(s.Q[i]))}</em> L/s</div></div>`});return l});
  const NL=vn.map((n,i)=>{const m=L.circleMarker(ll(n.geometry.coordinates),{pane:'nut',radius:5,weight:1.5,color:'#0b1220',fillOpacity:1}).addTo(G.nut);
@@ -133,7 +134,7 @@ try{
  // UI
  const top_=document.getElementById('top');
  top_.innerHTML=SCN.map(s=>`<button class="sc" data-k="${s[0]}" style="--c:${s[2]}"><i></i>${s[1]}</button>`).join('');
- const LY=[['thua','Thửa','#fbbf24'],['gt','Đường','#475569'],['ong','Ống','#22d3ee'],['nut','Nút','#34d399'],['dh','Đồng hồ','#38bdf8'],['nen','Nền vệ tinh','#94a3b8']];
+ const LY=[['thua','Thửa','#fbbf24'],['ld','Lòng đường','#64748b'],['vh','Lề đường','#e5e7eb'],['hm','Hẻm','#fb923c'],['ong','Ống','#22d3ee'],['nut','Nút','#34d399'],['dh','Đồng hồ','#38bdf8'],['nen','Nền vệ tinh','#94a3b8']];
  layers.innerHTML=LY.map(l=>`<button class="ch on" data-l="${l[0]}" style="--c:${l[2]}"><i></i>${l[1]}</button>`).join('');
  layers.onclick=e=>{const b=e.target.closest('.ch');if(!b)return;const k=b.dataset.l;st.on[k]=!st.on[k];b.classList.toggle('on',!!st.on[k]);
   if(k=='nen'){st.on.nen?base.addTo(map):map.removeLayer(base)}else{st.on[k]?G[k].addTo(map):map.removeLayer(G[k])}legend()};
@@ -143,6 +144,7 @@ try{
  function legend(){leg.hidden=false;let h='';
   if(st.on.nut)h+='<div>'+[['#7f1d1d','<0'],['#ef4444','0–4'],['#fb923c','4–6'],['#fbbf24','6–10'],['#34d399','10–14'],['#38bdf8','≥14 m']].map(x=>`<span><i style="background:${x[0]}"></i>${x[1]}</span>`).join('')+'</div>';
   if(st.on.ong)h+='<div>'+[100,150,200].map(d=>`<span><u style="background:${DNC[d]};height:${DNW[d]}px"></u>${d}</span>`).join('')+'</div>';
+  {const r=[['ld','Lòng đường','#475569'],['vh','Lề đường','#e5e7eb'],['hm','Hẻm','#fb923c']].filter(x=>st.on[x[0]]);if(r.length)h+='<div>'+r.map(x=>`<span><i style="background:${x[2]}"></i>${x[1]}</span>`).join('')+'</div>'}
   if(st.on.thua)h+='<div>'+[['nha','Nhà'],['cc','CC'],['truong','Trường'],['cv','C.viên'],['ubnd','UBND']].map(x=>`<span><i style="background:${TC[x[0]]}"></i>${x[1]}</span>`).join('')+'</div>';
   leg.innerHTML=h}
  function chart(){const cv=c24,g=cv.getContext('2d'),W=cv.width,H=cv.height,l=34,r=8,t=8,b=22,w=W-l-r,h=H-t-b;g.clearRect(0,0,W,H);
