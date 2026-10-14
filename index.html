@@ -142,7 +142,7 @@ try{
  play.onclick=()=>{if(st.play){clearInterval(st.play);st.play=null;play.textContent='▶'}else{play.textContent='❚❚';st.play=setInterval(()=>{st.h=(st.h+1)%24;hr.value=st.h;draw()},700)}};
  function legend(){leg.hidden=false;let h='';
   if(st.on.nut)h+='<div>'+[['#7f1d1d','<0'],['#ef4444','0–4'],['#fb923c','4–6'],['#fbbf24','6–10'],['#34d399','10–14'],['#38bdf8','≥14 m']].map(x=>`<span><i style="background:${x[0]}"></i>${x[1]}</span>`).join('')+'</div>';
-  if(st.on.ong)h+='<div>'+[100,150,200,250,300].map(d=>`<span><u style="background:${DNC[d]};height:${DNW[d]}px"></u>${d}</span>`).join('')+'</div>';
+  if(st.on.ong)h+='<div>'+[100,150,200].map(d=>`<span><u style="background:${DNC[d]};height:${DNW[d]}px"></u>${d}</span>`).join('')+'</div>';
   if(st.on.thua)h+='<div>'+[['nha','Nhà'],['cc','CC'],['truong','Trường'],['cv','C.viên'],['ubnd','UBND']].map(x=>`<span><i style="background:${TC[x[0]]}"></i>${x[1]}</span>`).join('')+'</div>';
   leg.innerHTML=h}
  function chart(){const cv=c24,g=cv.getContext('2d'),W=cv.width,H=cv.height,l=34,r=8,t=8,b=22,w=W-l-r,h=H-t-b;g.clearRect(0,0,W,H);
