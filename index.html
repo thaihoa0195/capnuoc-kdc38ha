@@ -1,115 +1,49 @@
 <!doctype html>
-<html lang="vi"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WebGIS Cấp nước KDC 38 ha Tân Thới Nhất</title>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cấp nước KDC 38 ha</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b1220;--glass:rgba(13,20,36,.82);--line:rgba(255,255,255,.09);--tx:#e8eefc;--mut:#8fa0c0;--acc:#38bdf8;--ok:#34d399;--warn:#fbbf24;--bad:#f87171}
-*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;font-size:13px}
-#map{position:absolute;inset:0;background:#0b1220}
-.leaflet-container{font-family:inherit}
-#side{position:absolute;z-index:1000;top:14px;left:14px;bottom:14px;width:344px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;scrollbar-width:thin;padding-right:2px}
-.card{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 8px 30px rgba(0,0,0,.35)}
-.hd{display:flex;gap:10px;align-items:center}
-.logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#38bdf8,#6366f1);display:grid;place-items:center;font-size:20px;flex:none}
-h1{font-size:15px;line-height:1.2;margin:0;font-weight:700}
-.sub{color:var(--mut);font-size:11.5px;margin-top:2px}
-h2{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);margin:0 0 8px;font-weight:600}
-.seg{display:flex;background:rgba(255,255,255,.05);border-radius:9px;padding:3px;gap:2px}
-.seg button{flex:1;border:0;background:none;color:var(--mut);padding:6px 4px;border-radius:7px;font:inherit;font-weight:500;cursor:pointer;transition:.15s}
-.seg button.on{background:var(--acc);color:#04202e;font-weight:700}
-.seg button:hover:not(.on){color:var(--tx)}
-.seg.t button{font-size:11.5px;padding:6px 2px}
-.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.kpi{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-.kpi b{display:block;font-size:19px;font-weight:700;letter-spacing:-.02em}.kpi span{color:var(--mut);font-size:11px}
-.kpi small{font-size:11px;color:var(--mut);font-weight:500}
-.lg{display:flex;flex-wrap:wrap;gap:5px 10px}.lg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-.lg div{font-size:11.5px;color:#cbd6ee}
-.row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;color:#cbd6ee}
-.sw{position:relative;width:34px;height:19px;flex:none}.sw input{display:none}
-.sw s{position:absolute;inset:0;background:rgba(255,255,255,.14);border-radius:20px;transition:.15s;cursor:pointer}
-.sw s:after{content:"";position:absolute;left:2px;top:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s}
-.sw input:checked+s{background:var(--acc)}.sw input:checked+s:after{left:17px}
-select{width:100%;background:rgba(255,255,255,.06);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:7px;font:inherit}
-select option{color:#000}
-#hist{width:100%;height:70px;display:block}
-.note{color:var(--mut);font-size:10.5px;line-height:1.5}
-.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10.5px;font-weight:600}
-.leaflet-popup-content-wrapper{background:rgba(13,20,36,.94);color:var(--tx);border-radius:12px;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.5)}
-.leaflet-popup-tip{background:rgba(13,20,36,.94)}
-.leaflet-popup-content{margin:12px 14px;font-size:12px;min-width:190px}
-.pp h3{margin:0 0 6px;font-size:13.5px}.pp table{width:100%;border-collapse:collapse}.pp td{padding:2.5px 0;color:#cbd6ee}.pp td:last-child{text-align:right;font-weight:600;color:#fff}
-.leaflet-control-attribution{background:rgba(13,20,36,.7)!important;color:#8fa0c0!important;font-size:10px}.leaflet-control-attribution a{color:#8fa0c0!important}
-.leaflet-control-zoom a{background:var(--glass)!important;color:#fff!important;border-color:var(--line)!important}
-.tt{background:rgba(13,20,36,.92);color:#fff;border:1px solid var(--line);border-radius:8px;font-size:11.5px;padding:4px 8px}
-.leaflet-tooltip.tt:before{display:none}
-.pin{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:14px;border:2px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,.5)}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(248,113,113,.7)}100%{box-shadow:0 0 0 16px rgba(248,113,113,0)}}
-.pin.f{background:#ef4444;animation:pulse 1.6s infinite}.pin.s{background:#0ea5e9}
-#tog{display:none}
-.pl{border:0;background:var(--acc);color:#04202e;width:32px;height:32px;border-radius:50%;font-weight:700;cursor:pointer;font-size:13px}
-input[type=range]{accent-color:#38bdf8}
-.t24{width:100%;border-collapse:collapse;font-size:11px}.t24 th{color:var(--mut);font-weight:600;text-align:right;padding:3px 4px;position:sticky;top:0}.t24 td{padding:3px 4px;text-align:right;color:#cbd6ee;border-top:1px solid var(--line)}.t24 tr.on td{background:rgba(56,189,248,.18);color:#fff}.t24 td:first-child,.t24 th:first-child{text-align:left}
-@media(max-width:760px){#side{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:52vh}#tog{display:block;position:absolute;z-index:1100;top:10px;right:10px;background:var(--glass);color:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px}}
+:root{--bg:#0b1220;--glass:rgba(13,20,36,.88);--line:rgba(255,255,255,.1);--tx:#e8eefc;--mut:#8fa0c0;--acc:#38bdf8}
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font:13px Inter,system-ui,sans-serif}
+#map{position:absolute;inset:0}
+.box{position:absolute;z-index:1000;background:var(--glass);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(10px)}
+#top{top:10px;left:10px;display:flex;gap:6px;padding:6px}
+.sc{border:2px solid transparent;background:rgba(255,255,255,.06);color:var(--tx);font:600 13px Inter;padding:9px 14px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:7px}
+.sc i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.sc.on{background:color-mix(in srgb,var(--c) 22%,transparent);border-color:var(--c)}
+#panel{left:10px;bottom:10px;width:330px;padding:12px 14px}
+#big{display:flex;align-items:baseline;gap:8px}#big b{font-size:44px;font-weight:800;line-height:1}#big small{color:var(--mut);font-size:12px}
+#hrL{margin-left:auto;font-weight:800;font-size:20px}
+.row{display:flex;align-items:center;gap:8px;margin-top:8px}
+#play{width:34px;height:34px;border-radius:50%;border:0;background:var(--acc);color:#04202e;font-size:14px;cursor:pointer;flex:none}
+#hr{flex:1;accent-color:var(--acc)}
+canvas{width:100%;height:92px;display:block;margin-top:6px}
+#layers{top:10px;right:10px;display:flex;flex-direction:column;gap:5px;padding:8px;max-width:190px}
+.ch{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--tx);font:600 12px Inter;padding:6px 10px;border-radius:9px;cursor:pointer;text-align:left}
+.ch i{width:12px;height:12px;border-radius:3px;background:var(--c);flex:none}
+.ch:not(.on){opacity:.4}.ch:not(.on) i{background:transparent;outline:2px solid var(--c);outline-offset:-2px}
+#leg{right:10px;bottom:10px;padding:9px 11px;font-size:11px;color:var(--mut)}
+#leg div{display:flex;gap:10px;align-items:center;margin:2px 0;flex-wrap:wrap}#leg span{display:flex;align-items:center;gap:4px}
+#leg i{display:inline-block;width:10px;height:10px;border-radius:50%}#leg u{display:inline-block;width:16px;border-radius:2px}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#0f172a;color:var(--tx);border:1px solid var(--line)}
+.pp b{font-size:15px}.pp div{margin-top:3px;color:var(--mut)}.pp em{font-style:normal;color:var(--tx);font-weight:600}
+#err{position:absolute;z-index:2000;top:40%;left:50%;transform:translateX(-50%);background:#7f1d1d;padding:14px 18px;border-radius:12px;max-width:80%}
+@media(max-width:700px){#panel{width:auto;right:10px}#leg{display:none}#layers{top:auto;bottom:208px;right:10px;flex-direction:row;flex-wrap:wrap;max-width:none;left:10px}.sc{padding:8px 10px;font-size:12px}#big b{font-size:34px}canvas{height:70px}}
 </style></head><body>
 <div id="map"></div>
-<button id="tog" onclick="document.getElementById('side').style.display=getComputedStyle(document.getElementById('side')).display=='none'?'flex':'none'">☰ Bảng</button>
-<div id="side">
- <div class="card hd"><div class="logo">💧</div><div><h1>Cấp nước · KDC 38 ha Tân Thới Nhất</h1><div class="sub">Quận 12, TP.HCM · Mô phỏng thủy lực 24 giờ</div></div></div>
- <div class="card"><h2>Phương án mạng lưới</h2>
-  <div class="seg" id="segNet"><button data-v="cur" class="on">Hiện trạng</button><button data-v="A">PA-A</button><button data-v="B">PA-B</button></div>
-  <div style="height:8px"></div><h2>Thời điểm</h2>
-  <div class="seg t" id="segT"><button data-v="hr" class="on">24 giờ</button><button data-v="dsg">TK 14 m</button><button data-v="fire">TK+cháy</button></div>
-  <div id="hrBox" style="margin-top:10px"><div style="display:flex;align-items:center;gap:10px"><button id="play" class="pl" title="Chạy 24 giờ">▶</button><input type="range" id="hr" min="0" max="23" step="1" value="18" style="flex:1"><b id="hrL" style="min-width:48px;text-align:right">18:00</b></div></div>
-  <div class="note" id="scLabel" style="margin-top:8px"></div></div>
- <div class="card"><h2>Mô phỏng 24 giờ · áp lực nhỏ nhất</h2><canvas id="c24" width="680" height="300" style="width:100%;display:block;cursor:pointer"></canvas>
-  <div class="lg" id="lg24" style="margin-top:6px"></div>
-  <details style="margin-top:8px"><summary style="cursor:pointer;color:#cbd6ee">Bảng kết quả 24 giờ</summary><div style="overflow-x:auto;margin-top:6px"><table id="t24" class="t24"></table></div><button id="csv" class="pl" style="width:auto;padding:6px 12px;margin-top:8px;border-radius:8px">⬇ Tải CSV 24 giờ</button></details></div>
- <div class="card"><h2>Chỉ tiêu mô hình</h2><div class="kpis" id="kpis"></div>
-  <div style="height:10px"></div><h2>Phân bố áp lực nút (m)</h2><canvas id="hist" width="620" height="140"></canvas></div>
- <div class="card"><h2>Hiển thị ống theo</h2>
-  <div class="seg" id="segPipe"><button data-v="dn" class="on">Đường kính</button><button data-v="vel">Vận tốc</button></div>
-  <div style="height:8px"></div><h2>Hiển thị nút theo</h2>
-  <div class="seg" id="segNode"><button data-v="p" class="on">Áp lực</button><button data-v="ok">Đạt / không</button></div>
-  <div style="height:10px"></div><div class="lg" id="lg"></div></div>
- <div class="card"><h2>Lớp bản đồ</h2>
-  <div class="row">Thửa đất theo chức năng<label class="sw"><input type="checkbox" id="ck_thua" checked><s></s></label></div>
-  <div class="row">Đường giao thông<label class="sw"><input type="checkbox" id="ck_gt" checked><s></s></label></div>
-  <div class="row">Ống phân phối<label class="sw"><input type="checkbox" id="ck_p" checked><s></s></label></div>
-  <div class="row">Nút áp lực<label class="sw"><input type="checkbox" id="ck_n" checked><s></s></label></div>
-  <div style="height:6px"></div><h2>Nền bản đồ</h2>
-  <select id="base"><option value="sat">Ảnh vệ tinh (Esri)</option><option value="dark">Tối (Carto)</option><option value="light">Sáng (Carto)</option></select>
-  <div class="lg" id="lgT" style="margin-top:10px"></div></div>
- <div class="card note"><b style="color:#cbd6ee">Lưu ý.</b> Mô hình giả định: áp đồng hồ tổng theo số đo thực DMA TTN.1_MR_1_1 (1–7/10/2026; áp thiết kế 14 m), nền phẳng +2,5 m, Hazen-Williams C=100, dân số 16.113 người, q=140 L/ng·ng.đ (TCVN 13606:2023), công cộng–dịch vụ 15,5%, thất thoát 12%, hệ số giờ cao điểm 1,8. Mô phỏng 24 giờ được tính ngay trong trình duyệt (giải Hazen-Williams bằng phương pháp Newton) cho 24 mốc giờ: áp đồng hồ tổng là trung bình theo giờ của 672 số đo 15 phút, nhu cầu theo hệ số giờ; kết quả khớp mô hình EPANET trong báo cáo (lệch ≤ 0,05 m). Dữ liệu mạng lưới đọc trực tiếp từ Postgres (Supabase). Nút đạt khi áp lực ≥ 4 m (QĐ 01/2021/QĐ-UBND); chỉ tiêu thiết kế TCVN 13606:2023 là ≥ 10 m. Số tầng, số người/nhà và lưu lượng chữa cháy (2×15 L/s) là giả định, cần thay bằng số liệu thực tế trước khi dùng thiết kế. Nhóm GIS – Phòng Kỹ thuật, Cấp nước Trung An.</div>
+<div class="box" id="top"></div>
+<div class="box" id="layers"></div>
+<div class="box" id="panel">
+ <div id="big"><b id="pm">–</b><small>m · áp thấp nhất</small><span id="hrL"></span></div>
+ <div class="row"><button id="play" aria-label="Chạy">▶</button><input id="hr" type="range" min="0" max="23" value="18"></div>
+ <canvas id="c24" width="620" height="180"></canvas>
 </div>
+<div class="box" id="leg"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 const SB='https://thyedvcadlstxcprzvtw.supabase.co/rest/v1/',KEY='sb_publishable_fdK94ntOkXc6xXdRiqztUA_arlPXiDB';
-async function get(tb,q=''){let out=[],off=0;for(;;){const r=await fetch(SB+tb+'?select=*'+q,{headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Range-Unit':'items',Range:off+'-'+(off+999)}});if(!r.ok)throw new Error(tb+' '+r.status+' '+(await r.text()));const j=await r.json();out=out.concat(j);if(j.length<1000)break;off+=1000}return out}
-const FAC={h3:.3,h7:1.5,h12:1.2,h15:1,h18:1.8,h21:1,dsg:1.8,fire:1.8};
-async function loadD(){
- const [vt,vg,vo,vn,vd,kn,ko,kb]=await Promise.all([get('v_thua'),get('v_giaothong'),get('v_ong'),get('v_nut'),get('v_dongho'),get('kdc_kq_nut'),get('kdc_kq_ong'),get('kdc_kichban')]);
- const D={thua:[],gt:[],pipes:[],nodes:[],S:{}};
- const polys=g=>g.type=='Polygon'?[g.coordinates[0]]:g.coordinates.map(p=>p[0]);
- vt.forEach(r=>polys(r.geometry).forEach(c=>D.thua.push({t:r.loai=='kt'?'nha':r.loai,n:r.ten_loai&&!/Thửa nhà ở|kiểm tra/.test(r.ten_loai)?r.ten_loai:'',pop:+r.dan_so,d:+r.nhu_cau_l_ngay/1000,fl:r.so_tang,nd:r.nut_cap,a:+r.dien_tich,c})));
- vg.forEach(r=>polys(r.geometry).forEach(c=>D.gt.push({c})));
- vo.sort((a,b)=>+a.id.slice(1)-+b.id.slice(1));
- vo.forEach(r=>D.pipes.push({id:r.id,L:Math.round(+r.chieu_dai),d0:r.d_hien_trang,dA:r.d_pa_a,dB:r.d_pa_b,a:r.nut_dau,b:r.nut_cuoi,Lx:+r.chieu_dai,c:r.geometry.coordinates}));
- D.fire=[];
- vn.forEach(r=>{D.nodes.push({id:r.id,c:r.geometry.coordinates,q:+r.nhu_cau_l_s,req:4,k:[]});if(r.hong_chua_chay)D.fire.push(r.id)});
- const ni={};D.nodes.forEach((n,i)=>ni[n.id]=i);const oi={};D.pipes.forEach((p,i)=>oi[p.id]=i);
- const NET={S1:'cur',A:'A',B:'B',cur:'cur'};
- kn.forEach(r=>{const k=r.pa+'_'+r.kich_ban;(D.S[k]=D.S[k]||{p:[],v:[],q:[],tot:0}).p[ni[r.nut]]=+r.p_m});
- ko.forEach(r=>{const k=r.pa+'_'+r.kich_ban;const s=D.S[k];s.v[oi[r.ong]]=+r.v_m_s;s.q[oi[r.ong]]=+r.q_l_s});
- const qs=D.nodes.reduce((a,n)=>a+n.q,0);
- Object.keys(D.S).forEach(k=>{const t=k.split('_')[1];D.S[k].tot=qs*FAC[t]+(t=='fire'?30:0)});
- const m={};kb.forEach(r=>m[r.ma]=r);
- D.meta={nA:m.A.n_ong_nang_cap,LA:+m.A.chieu_dai_nang_cap,nB:m.B.n_ong_nang_cap,LB:+m.B.chieu_dai_nang_cap};
- D.src=vd[0].geometry.coordinates;D.dh=vd[0];const jp=v=>typeof v=='string'?JSON.parse(v):v;D.pH=jp(vd[0].p_gio);D.qH=jp(vd[0].q_gio);
- return D}
-let D;
+async function get(tb){let out=[],off=0;for(;;){const r=await fetch(SB+tb+'?select=*',{headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Range-Unit':'items',Range:off+'-'+(off+999)}});if(!r.ok)throw new Error(tb+' '+r.status);const j=await r.json();out=out.concat(j);if(j.length<1000)break;off+=1000}return out}
 // Hydraulic solver: Hazen-Williams, Newton on nodal heads (same method as the report's model)
 function solveNet(nodes,pipes,Hr,dem,D,warm){
   // nodes: ids[]; pipes: {a,b,L,C} indices (-1 = reservoir); D: per-pipe diameter mm; dem: L/s per node
@@ -162,116 +96,71 @@ function run24(nodes,pipes,D,qavg,pat,pHour,Z){
 }
 
 
-loadD().then(d=>{D=d;main()}).catch(e=>{document.body.insertAdjacentHTML('beforeend','<div style="position:absolute;z-index:2000;top:40%;left:50%;transform:translateX(-50%);background:#7f1d1d;color:#fff;padding:14px 18px;border-radius:12px;max-width:80%">Không đọc được dữ liệu từ Postgres: '+e.message+'</div>')});
-function main(){
-const SC={cur:'Mạng hiện trạng',A:'PA-A: nâng cỡ tối thiểu ('+D.meta.nA+' ống, '+Math.round(D.meta.LA).toLocaleString('vi')+' m)',B:'PA-B: nâng cỡ có dự phòng ('+D.meta.nB+' ống, '+Math.round(D.meta.LB).toLocaleString('vi')+' m)'};
-const TL={h3:'3h – áp đồng hồ tổng đo thực 25,7 m, nhu cầu ×0,3',h12:'12h – áp đồng hồ tổng đo thực 18,5 m, nhu cầu ×1,2',h18:'18h – áp đồng hồ tổng đo thực 14,9 m, nhu cầu ×1,8',dsg:'Thiết kế: áp đồng hồ tổng 14 m, nhu cầu ×1,8',fire:'Thiết kế + chữa cháy 2×15 L/s'};
-const state={net:'cur',tm:'hr',hour:18,pipe:'dn',node:'p'};
 const PAT=[0.5,0.4,0.35,0.3,0.4,0.8,1.3,1.5,1.4,1.2,1.1,1.1,1.2,1.1,1.0,1.0,1.2,1.6,1.8,1.5,1.2,1.0,0.8,0.6];
-const ZN=2.5, DHT_I=D.nodes.findIndex(n=>n.id=='DHT');
-const NI={};D.nodes.forEach((n,i)=>NI[n.id]=i);
-const SPIPES=D.pipes.map(p=>({a:NI[p.a],b:NI[p.b],L:p.Lx,C:100}));SPIPES.push({a:DHT_I,b:-1,L:5,C:100});
-const QAVG=D.nodes.map(n=>n.q);
-const SIM={};
-[['cur','d0'],['A','dA'],['B','dB']].forEach(([net,f])=>{const Dd=D.pipes.map(p=>+p[f]);Dd.push(200);
- const r=run24(D.nodes,SPIPES,Dd,QAVG,PAT,D.pH,ZN);SIM[net]=r;
- r.forEach(x=>{D.S[net+'_h'+x.h]={p:x.P,v:x.V.slice(0,D.pipes.length),q:x.Q.slice(0,D.pipes.length),tot:x.tot}})});
-const tkey=()=>state.tm=='hr'?'h'+state.hour:state.tm;
-const hh=h=>String(h).padStart(2,'0')+':00';
-const TLf=()=>state.tm=='hr'?hh(state.hour)+' · áp đồng hồ tổng đo thực '+D.pH[state.hour].toFixed(1).replace('.',',')+' m, nhu cầu ×'+PAT[state.hour].toFixed(2).replace('.',','):TL[state.tm];
-const map=L.map('map',{zoomControl:true,maxZoom:21,preferCanvas:false}).setView([10.8255,106.6165],17);
-const bases={sat:L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:21,maxNativeZoom:19,attribution:'Esri World Imagery'}),
-dark:L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:21,attribution:'© OpenStreetMap, © CARTO'}),
-light:L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:21,attribution:'© OpenStreetMap, © CARTO'})};
-let cur=bases.sat.addTo(map);
-base.onchange=e=>{map.removeLayer(cur);cur=bases[e.target.value].addTo(map);cur.bringToBack()};
-const ll=c=>[c[1],c[0]];
-const TC={nha:'#fbbf24',cc:'#f87171',truong:'#60a5fa',cv:'#4ade80',ubnd:'#c084fc',xlnt:'#9ca3af',den:'#d6a77a'};
-const TN={nha:'Nhà ở thấp tầng',cc:'Chung cư',truong:'Trường học',cv:'Công viên / cây xanh',ubnd:'UBND / công cộng',xlnt:'Trạm XLNT',den:'Đền / tín ngưỡng'};
-const DNC={100:'#a5f3fc',150:'#38bdf8',200:'#3b82f6',250:'#6366f1',300:'#8b5cf6',400:'#d946ef'};
-const DNW={100:2.2,150:3,200:4,250:5,300:6,400:7.5};
-const VB=[[0.3,'#38bdf8','< 0,3'],[0.6,'#34d399','0,3–0,6'],[1.0,'#fbbf24','0,6–1,0'],[1.5,'#fb923c','1,0–1,5'],[1e9,'#ef4444','> 1,5 m/s']];
-const PB=[[0,'#7f1d1d','< 0 (âm)'],[4,'#ef4444','0–4'],[6,'#fb923c','4–6'],[10,'#fbbf24','6–10'],[14,'#34d399','10–14'],[1e9,'#38bdf8','≥ 14 m']];
-const pc=p=>PB.find(b=>p<b[0])[1], vc=v=>VB.find(b=>v<b[0])[1];
-// panes
-['thua','gt','pipes','nodes','mk'].forEach((n,i)=>{map.createPane(n).style.zIndex=410+i*10});
-const gThua=L.layerGroup(),gGt=L.layerGroup(),gP=L.layerGroup(),gN=L.layerGroup(),gM=L.layerGroup();
-D.gt.forEach(r=>L.polygon(r.c.map(ll),{pane:'gt',stroke:false,fillColor:'#0f172a',fillOpacity:.55,interactive:false}).addTo(gGt));
-D.thua.forEach(t=>{const f=L.polygon(t.c.map(ll),{pane:'thua',color:'#0b1220',weight:.6,fillColor:TC[t.t]||'#999',fillOpacity:.5});
- f.bindTooltip(TN[t.t]||t.t,{sticky:true,className:'tt'});
- f.bindPopup(()=>`<div class="pp"><h3>${t.n||TN[t.t]}</h3><table><tr><td>Chức năng</td><td>${TN[t.t]}</td></tr><tr><td>Diện tích</td><td>${Math.round(t.a).toLocaleString('vi')} m²</td></tr><tr><td>Số tầng (giả định)</td><td>${t.fl}</td></tr><tr><td>Dân số tính toán</td><td>${Math.round(t.pop).toLocaleString('vi')}</td></tr><tr><td>Nhu cầu</td><td>${t.d.toFixed(1)} m³/ng.đ</td></tr><tr><td>Nút cấp</td><td>${t.nd}</td></tr></table></div>`);
- f.addTo(gThua)});
-const PL=[],NL=[];
-D.pipes.forEach((p,i)=>{const l=L.polyline(p.c.map(ll),{pane:'pipes',lineCap:'round',lineJoin:'round'});l.on('mouseover',()=>l.setStyle({weight:l.options.weight+3}));l.on('mouseout',()=>style());
- l.bindPopup(()=>{const s=D.S[state.net+'_'+tkey()];return `<div class="pp"><h3>Ống ${p.id}</h3><table><tr><td>Chiều dài</td><td>${p.L} m</td></tr><tr><td>DN hiện trạng</td><td>${p.d0}</td></tr><tr><td>DN PA-A</td><td>${p.dA}${p.dA>p.d0?' ▲':''}</td></tr><tr><td>DN PA-B</td><td>${p.dB}${p.dB>p.d0?' ▲':''}</td></tr><tr><td>Lưu lượng</td><td>${s.q[i].toFixed(1)} L/s</td></tr><tr><td>Vận tốc</td><td>${s.v[i].toFixed(2)} m/s</td></tr></table></div>`});
- l.addTo(gP);PL.push(l)});
-D.nodes.forEach((n,i)=>{const m=L.circleMarker(ll(n.c),{pane:'nodes',radius:5,weight:1.5,color:'#0b1220',fillOpacity:1});
- m.bindPopup(()=>{const g=k=>(D.S[k]||{p:[]}).p[i];const row=(a,k)=>{const v=g(k);return `<tr><td>${a}</td><td style="color:${pc(v)}">${v.toFixed(1)} m</td></tr>`};
-  const blk=(ttl,net)=>{const ps=SIM[net].map(x=>x.P[i]);const mn=Math.min(...ps),hm=ps.indexOf(mn);return `<div style="margin:7px 0 3px;color:#8fa0c0;font-size:10.5px">ÁP LỰC · ${ttl}</div><table>${row('Giờ '+state.hour+':00',net+'_h'+state.hour)}<tr><td>Nhỏ nhất 24 h (lúc ${hh(hm)})</td><td style="color:${pc(mn)}">${mn.toFixed(1)} m</td></tr><tr><td>Lớn nhất 24 h</td><td>${Math.max(...ps).toFixed(1)} m</td></tr>${row('Thiết kế 14 m',net+'_dsg')}${row('Thiết kế + cháy',net+'_fire')}</table>`};
-  return `<div class="pp"><h3>Nút ${n.id}</h3><table><tr><td>Nhu cầu TB</td><td>${n.q.toFixed(2)} L/s</td></tr><tr><td>Áp lực yêu cầu</td><td>≥ ${n.req} m (QĐ 01/2021)</td></tr></table>${blk('HIỆN TRẠNG','cur')}${blk('PA-A','A')}${blk('PA-B','B')}</div>`});
- m.addTo(gN);NL.push(m)});
-const ic=(c,e)=>L.divIcon({className:'',html:`<div class="pin ${c}">${e}</div>`,iconSize:[26,26],iconAnchor:[13,13]});
-L.marker([D.src[1],D.src[0]],{pane:'mk',icon:ic('s','⛲')}).bindTooltip('Đồng hồ tổng R0 · áp thực đo 14–26 m',{className:'tt',direction:'top'}).addTo(gM);
-const FM=[];D.fire.forEach(id=>{const n=D.nodes.find(x=>x.id==id);const mk=L.marker(ll(n.c),{pane:'mk',icon:ic('f','🔥')}).bindTooltip('Họng chữa cháy '+id+' · 15 L/s',{className:'tt',direction:'top'});FM.push(mk)});
-[gGt,gThua,gP,gN,gM].forEach(g=>g.addTo(map));
-function sc(){return D.S[state.net+'_'+tkey()]}
-function style(){const s=sc(),netUp=state.net!='cur';FM.forEach(m=>{if(state.tm=='fire')m.addTo(gM);else gM.removeLayer(m)});
- PL.forEach((l,i)=>{const p=D.pipes[i];const d=netUp?(state.net=='A'?p.dA:p.dB):p.d0;let col=state.pipe=='dn'?DNC[d]||'#fff':vc(s.v[i]);
-  const hi=netUp&&d>p.d0;l.setStyle({color:col,weight:(DNW[d]||3)*(map.getZoom()>=18?1.3:1),opacity:.95,dashArray:null});
-  if(hi&&state.pipe=='dn')l.setStyle({color:'#fff',weight:(DNW[d]||3)+1.5,opacity:1});});
- NL.forEach((m,i)=>{const n=D.nodes[i],p=s.p[i];const ok=p>=n.req;m.setStyle({fillColor:state.node=='p'?pc(p):(ok?'#34d399':'#ef4444')})});
- kpi(s);legend();hist(s)}
-const C24={l:44,r:12,t:12,b:34};
-function chart24(){const cv=c24,g=cv.getContext('2d'),W=cv.width,H=cv.height,w=W-C24.l-C24.r,h=H-C24.t-C24.b;g.clearRect(0,0,W,H);
- const sets=[['cur','Hiện trạng','#f87171'],['A','PA-A','#34d399'],['B','PA-B','#38bdf8']];
- const pmin=n=>SIM[n].map(x=>Math.min(...x.P));let lo=Math.min(-4,...sets.flatMap(s=>pmin(s[0]))),hi=Math.max(30,...D.pH);lo=Math.floor(lo/5)*5;hi=Math.ceil(hi/5)*5;
- const X=i=>C24.l+w*i/23,Y=v=>C24.t+h*(1-(v-lo)/(hi-lo));
- g.font='500 18px Inter,sans-serif';g.textAlign='right';g.fillStyle='#8fa0c0';g.strokeStyle='rgba(255,255,255,.08)';g.lineWidth=1;
- for(let v=lo;v<=hi;v+=5){g.beginPath();g.moveTo(C24.l,Y(v));g.lineTo(W-C24.r,Y(v));g.stroke();g.fillText(v,C24.l-6,Y(v)+6)}
- g.textAlign='center';for(let i=0;i<24;i+=3)g.fillText(i,X(i),H-10);
- g.setLineDash([6,5]);g.strokeStyle='#fbbf24';g.beginPath();g.moveTo(C24.l,Y(4));g.lineTo(W-C24.r,Y(4));g.stroke();g.setLineDash([]);
- g.fillStyle='#fbbf24';g.textAlign='left';g.fillText('4 m',C24.l+6,Y(4)-6);
- const line=(arr,col,wd,dash)=>{g.strokeStyle=col;g.lineWidth=wd;g.setLineDash(dash||[]);g.beginPath();arr.forEach((v,i)=>i?g.lineTo(X(i),Y(v)):g.moveTo(X(i),Y(v)));g.stroke();g.setLineDash([])};
- line(D.pH,'#94a3b8',2,[3,4]);sets.forEach(s=>line(pmin(s[0]),s[2],s[0]==state.net?4:2));
- g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=1.5;g.beginPath();g.moveTo(X(state.hour),C24.t);g.lineTo(X(state.hour),C24.t+h);g.stroke();
- sets.forEach(s=>{g.fillStyle=s[2];g.beginPath();g.arc(X(state.hour),Y(pmin(s[0])[state.hour]),5.5,0,7);g.fill()});
- lg24.innerHTML=sets.map(s=>`<div><i style="background:${s[2]}"></i>${s[1]}</div>`).join('')+'<div><i style="background:#94a3b8"></i>Áp đồng hồ tổng (đo thực)</div>'}
-function table24(){const r=SIM[state.net],np=D.pipes.length;
- t24.innerHTML='<tr><th>Giờ</th><th>P ĐH (m)</th><th>Q (L/s)</th><th>P min</th><th>P max</th><th>Nút&lt;4m</th><th>V max</th></tr>'+r.map(x=>{const mn=Math.min(...x.P);return `<tr class="${x.h==state.hour?'on':''}"><td>${hh(x.h)}</td><td>${x.pm.toFixed(1)}</td><td>${x.tot.toFixed(1)}</td><td style="color:${mn<4?'#f87171':'#34d399'}">${mn.toFixed(1)}</td><td>${Math.max(...x.P).toFixed(1)}</td><td>${x.P.filter(v=>v<4).length}</td><td>${Math.max(...x.V.slice(0,np)).toFixed(2)}</td></tr>`}).join('')}
-function kpi(s){hrL.textContent=hh(state.hour);chart24();table24();const P=s.p,V=s.v;const mn=Math.min(...P),mx=Math.max(...P),vm=Math.max(...V);
- const okn=D.nodes.filter((n,i)=>P[i]>=n.req).length,neg=P.filter(x=>x<0).length;
- const c=(v,a,b)=>v<a?'var(--bad)':v<b?'var(--warn)':'var(--ok)';
- kpis.innerHTML=`<div class="kpi"><span>Tổng lưu lượng</span><b>${s.tot.toFixed(1)} <small>L/s</small></b></div>
- <div class="kpi"><span>Áp lực nhỏ nhất</span><b style="color:${c(mn,4,10)}">${mn.toFixed(1)} <small>m</small></b></div>
- <div class="kpi"><span>Áp lực lớn nhất</span><b>${mx.toFixed(1)} <small>m</small></b></div>
- <div class="kpi"><span>Vận tốc lớn nhất</span><b style="color:${vm>1.5?'var(--bad)':vm>1?'var(--warn)':'var(--ok)'}">${vm.toFixed(2)} <small>m/s</small></b></div>
- <div class="kpi" style="grid-column:span 2"><span>Nút đạt ≥ 4 m (QĐ 01/2021)</span><b>${okn}/${D.nodes.length} <small>· ${P.filter(x=>x>=10).length} nút ≥10 m · ${neg} âm</small></b></div>`;
- scLabel.innerHTML=`<b style="color:#cbd6ee">${SC[state.net]}</b> · ${TLf()}`}
-function legend(){const items=state.pipe=='dn'?Object.entries(DNC).map(([k,c])=>`<div><i style="background:${c}"></i>DN${k}</div>`):VB.map(b=>`<div><i style="background:${b[1]}"></i>${b[2]}</div>`);
- const ni=state.node=='p'?PB.map(b=>`<div><i style="border-radius:50%;background:${b[1]}"></i>${b[2]}</div>`):[['#34d399','Đạt'],['#ef4444','Không đạt']].map(b=>`<div><i style="border-radius:50%;background:${b[0]}"></i>${b[1]}</div>`);
- lg.innerHTML=`<div style="width:100%;color:#8fa0c0;font-size:10.5px">Ống ${state.pipe=='dn'?'(DN mm)':'(m/s)'}</div>${items.join('')}${state.net!='cur'&&state.pipe=='dn'?'<div><i style="background:#fff"></i>Ống được nâng cấp</div>':''}<div style="width:100%;color:#8fa0c0;font-size:10.5px;margin-top:4px">Nút ${state.node=='p'?'(m)':''}</div>${ni.join('')}`}
-lgT.innerHTML=Object.entries(TC).map(([k,c])=>`<div><i style="background:${c}"></i>${TN[k]}</div>`).join('');
-function hist(s){const cv=hist_=document.getElementById('hist'),g=cv.getContext('2d');g.clearRect(0,0,cv.width,cv.height);
- const bins=PB.map(()=>0);s.p.forEach(p=>bins[PB.findIndex(b=>p<b[0])]++);const mx=Math.max(...bins)||1,w=cv.width/bins.length;
- g.font='600 20px Inter,sans-serif';g.textAlign='center';
- bins.forEach((n,i)=>{const h=(cv.height-44)*n/mx;g.fillStyle=PB[i][1];g.beginPath();g.roundRect?g.roundRect(i*w+8,cv.height-24-h,w-16,Math.max(h,2),5):g.rect(i*w+8,cv.height-24-h,w-16,Math.max(h,2));g.fill();
-  g.fillStyle='#e8eefc';g.fillText(n,i*w+w/2,cv.height-30-h);g.fillStyle='#8fa0c0';g.font='500 16px Inter,sans-serif';g.fillText(PB[i][2].replace(' m','').replace(' (âm)',''),i*w+w/2,cv.height-5);g.font='600 20px Inter,sans-serif'})}
-function seg(id,k){document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));b.classList.add('on');state[k]=b.dataset.v;
- style()})}
-seg('segNet','net');
-document.querySelectorAll('#segT button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#segT button').forEach(x=>x.classList.remove('on'));b.classList.add('on');state.tm=b.dataset.v;hrBox.style.display=state.tm=='hr'?'block':'none';style()});
-hr.oninput=()=>{state.hour=+hr.value;style()};
-let timer=null;play.onclick=()=>{if(timer){clearInterval(timer);timer=null;play.textContent='▶';return}
- play.textContent='⏸';if(state.tm!='hr')document.querySelector('#segT button[data-v=hr]').click();
- timer=setInterval(()=>{state.hour=(state.hour+1)%24;hr.value=state.hour;style()},700)};
-c24.onclick=e=>{const r=c24.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*c24.width,h=Math.round((x-C24.l)/(c24.width-C24.l-C24.r)*23);if(h>=0&&h<=23){state.hour=h;hr.value=h;if(state.tm!='hr')document.querySelector('#segT button[data-v=hr]').click();else style()}};
-csv.onclick=()=>{const net=state.net,r=SIM[net];let s='\ufeffGio,Ap dong ho tong (m),He so gio,Tong luu luong (L/s),Ap nho nhat (m),Ap lon nhat (m),So nut <4 m,Van toc lon nhat (m/s)\n';
- r.forEach(x=>{s+=[x.h,x.pm.toFixed(2),PAT[x.h],x.tot.toFixed(1),Math.min(...x.P).toFixed(2),Math.max(...x.P).toFixed(2),x.P.filter(v=>v<4).length,Math.max(...x.V.slice(0,D.pipes.length)).toFixed(2)].join(',')+'\n'});
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([s],{type:'text/csv'}));a.download='mo_phong_24h_'+net+'.csv';a.click()};seg('segPipe','pipe');seg('segNode','node');
-const tg=(id,g)=>document.getElementById(id).onchange=e=>e.target.checked?g.addTo(map):map.removeLayer(g);
-tg('ck_thua',gThua);tg('ck_gt',gGt);tg('ck_p',gP);tg('ck_n',gN);
-map.on('zoomend',style);
-const b=L.latLngBounds(D.pipes.flatMap(p=>p.c.map(ll)));map.fitBounds(b.pad(.12),{paddingTopLeft:[innerWidth>760?360:0,0]});
-style();
-}
+const SCN=[['G','Giả định','#f87171','d_hien_trang'],['A','PA-A','#34d399','d_pa_a'],['B','PA-B','#38bdf8','d_pa_b']];
+const PB=[[0,'#7f1d1d'],[4,'#ef4444'],[6,'#fb923c'],[10,'#fbbf24'],[14,'#34d399'],[1e9,'#38bdf8']];
+const pc=p=>PB.find(b=>p<b[0])[1];
+const DNC={100:'#e2e8f0',150:'#22d3ee',200:'#818cf8',250:'#e879f9',300:'#f472b6'},DNW={100:2,150:3,200:4,250:5,300:6};
+const TC={nha:'#fbbf24',kt:'#fbbf24',cc:'#f87171',truong:'#60a5fa',cv:'#4ade80',ubnd:'#c084fc',xlnt:'#9ca3af',den:'#d6a77a'};
+const f1=v=>v.toFixed(1).replace('.',','),hh=h=>String(h).padStart(2,'0')+':00';
+const st={sc:'A',h:18,play:null,on:{thua:1,gt:1,ong:1,nut:1,dh:1,nen:1}};
+(async()=>{
+try{
+ const [vt,vg,vo,vn,vd]=await Promise.all([get('v_thua'),get('v_giaothong'),get('v_ong'),get('v_nut'),get('v_dongho')]);
+ vo.sort((a,b)=>+a.id.slice(1)-+b.id.slice(1));
+ const polys=g=>g.type=='Polygon'?[g.coordinates[0]]:g.coordinates.map(p=>p[0]);
+ const ll=c=>[c[1],c[0]];
+ const NI={};vn.forEach((n,i)=>NI[n.id]=i);
+ const DHT=NI['DHT'];
+ const pipes=vo.map(r=>({a:NI[r.nut_dau],b:NI[r.nut_cuoi],L:+r.chieu_dai,C:140}));pipes.push({a:DHT,b:-1,L:5,C:140});
+ const qavg=vn.map(n=>+n.nhu_cau_l_s);
+ const jp=v=>typeof v=='string'?JSON.parse(v):v;const pH=jp(vd[0].p_gio);
+ const SIM={},DN={};
+ SCN.forEach(([k,,,f])=>{const d=vo.map(r=>+r[f]);d.push(300);DN[k]=d;SIM[k]=run24(vn,pipes,d,qavg,PAT,pH,2.5)});
+ const pmin=k=>SIM[k].map(x=>Math.min(...x.P));
+ const map=L.map('map',{maxZoom:21}).setView([10.8255,106.6165],17);
+ const base=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:21,maxNativeZoom:19,attribution:'Esri'}).addTo(map);
+ ['thua','gt','ong','nut','dh'].forEach((n,i)=>map.createPane(n).style.zIndex=410+i*10);
+ const G={thua:L.layerGroup(),gt:L.layerGroup(),ong:L.layerGroup(),nut:L.layerGroup(),dh:L.layerGroup()};
+ vg.forEach(r=>polys(r.geometry).forEach(c=>L.polygon(c.map(ll),{pane:'gt',stroke:false,fillColor:'#0f172a',fillOpacity:.55,interactive:false}).addTo(G.gt)));
+ vt.forEach(r=>polys(r.geometry).forEach(c=>L.polygon(c.map(ll),{pane:'thua',color:'#0b1220',weight:.6,fillColor:TC[r.loai]||'#999',fillOpacity:.45,interactive:false}).addTo(G.thua)));
+ const PL=vo.map((r,i)=>{const l=L.polyline(r.geometry.coordinates.map(ll),{pane:'ong',lineCap:'round'}).addTo(G.ong);
+  l.bindPopup(()=>{const s=SIM[st.sc][st.h];return `<div class="pp"><b>Ống ${r.id}</b><div>DN <em>${DN[st.sc][i]}</em> · ${Math.round(+r.chieu_dai)} m</div><div>v <em>${s.V[i].toFixed(2).replace('.',',')}</em> m/s · Q <em>${f1(Math.abs(s.Q[i]))}</em> L/s</div></div>`});return l});
+ const NL=vn.map((n,i)=>{const m=L.circleMarker(ll(n.geometry.coordinates),{pane:'nut',radius:5,weight:1.5,color:'#0b1220',fillOpacity:1}).addTo(G.nut);
+  m.bindPopup(()=>{const ps=SIM[st.sc].map(x=>x.P[i]);return `<div class="pp"><b>Nút ${n.id}</b><div>Áp <em>${f1(ps[st.h])}</em> m · ${hh(st.h)}</div><div>24 h: <em>${f1(Math.min(...ps))}</em> – <em>${f1(Math.max(...ps))}</em> m</div></div>`});return m});
+ L.marker([vd[0].geometry.coordinates[1],vd[0].geometry.coordinates[0]],{pane:'dh',icon:L.divIcon({className:'',html:'<div style="width:24px;height:24px;border-radius:50%;background:#38bdf8;border:3px solid #fff;box-shadow:0 0 0 3px #0b1220"></div>',iconSize:[24,24],iconAnchor:[12,12]})}).bindTooltip('Đồng hồ tổng').addTo(G.dh);
+ Object.values(G).forEach(g=>g.addTo(map));
+ // UI
+ const top_=document.getElementById('top');
+ top_.innerHTML=SCN.map(s=>`<button class="sc" data-k="${s[0]}" style="--c:${s[2]}"><i></i>${s[1]}</button>`).join('');
+ const LY=[['thua','Thửa','#fbbf24'],['gt','Đường','#475569'],['ong','Ống','#22d3ee'],['nut','Nút','#34d399'],['dh','Đồng hồ','#38bdf8'],['nen','Nền vệ tinh','#94a3b8']];
+ layers.innerHTML=LY.map(l=>`<button class="ch on" data-l="${l[0]}" style="--c:${l[2]}"><i></i>${l[1]}</button>`).join('');
+ layers.onclick=e=>{const b=e.target.closest('.ch');if(!b)return;const k=b.dataset.l;st.on[k]=!st.on[k];b.classList.toggle('on',!!st.on[k]);
+  if(k=='nen'){st.on.nen?base.addTo(map):map.removeLayer(base)}else{st.on[k]?G[k].addTo(map):map.removeLayer(G[k])}legend()};
+ top_.onclick=e=>{const b=e.target.closest('.sc');if(b){st.sc=b.dataset.k;draw()}};
+ hr.oninput=()=>{st.h=+hr.value;draw()};
+ play.onclick=()=>{if(st.play){clearInterval(st.play);st.play=null;play.textContent='▶'}else{play.textContent='❚❚';st.play=setInterval(()=>{st.h=(st.h+1)%24;hr.value=st.h;draw()},700)}};
+ function legend(){leg.hidden=false;let h='';
+  if(st.on.nut)h+='<div>'+[['#7f1d1d','<0'],['#ef4444','0–4'],['#fb923c','4–6'],['#fbbf24','6–10'],['#34d399','10–14'],['#38bdf8','≥14 m']].map(x=>`<span><i style="background:${x[0]}"></i>${x[1]}</span>`).join('')+'</div>';
+  if(st.on.ong)h+='<div>'+[100,150,200,250,300].map(d=>`<span><u style="background:${DNC[d]};height:${DNW[d]}px"></u>${d}</span>`).join('')+'</div>';
+  if(st.on.thua)h+='<div>'+[['nha','Nhà'],['cc','CC'],['truong','Trường'],['cv','C.viên'],['ubnd','UBND']].map(x=>`<span><i style="background:${TC[x[0]]}"></i>${x[1]}</span>`).join('')+'</div>';
+  leg.innerHTML=h}
+ function chart(){const cv=c24,g=cv.getContext('2d'),W=cv.width,H=cv.height,l=34,r=8,t=8,b=22,w=W-l-r,h=H-t-b;g.clearRect(0,0,W,H);
+  const all=SCN.flatMap(s=>pmin(s[0]).map(v=>Math.max(v,-10)));const lo=Math.floor(Math.min(-10,...all)/10)*10,hi=30;
+  const X=i=>l+w*i/23,Y=v=>t+h*(1-(Math.max(v,lo)-lo)/(hi-lo));
+  g.font='500 20px Inter,sans-serif';g.fillStyle='#8fa0c0';g.strokeStyle='rgba(255,255,255,.08)';g.lineWidth=1;g.textAlign='right';
+  for(let v=lo;v<=hi;v+=10){g.beginPath();g.moveTo(l,Y(v));g.lineTo(W-r,Y(v));g.stroke();g.fillText(v,l-5,Y(v)+7)}
+  g.textAlign='center';for(let i=0;i<24;i+=6)g.fillText(i+'h',X(i),H-4);
+  g.setLineDash([6,5]);g.strokeStyle='#fbbf24';g.beginPath();g.moveTo(l,Y(8));g.lineTo(W-r,Y(8));g.stroke();g.setLineDash([]);
+  SCN.forEach(s=>{g.strokeStyle=s[2];g.lineWidth=s[0]==st.sc?5:2;g.globalAlpha=s[0]==st.sc?1:.55;g.beginPath();pmin(s[0]).forEach((v,i)=>i?g.lineTo(X(i),Y(v)):g.moveTo(X(i),Y(v)));g.stroke()});g.globalAlpha=1;
+  g.strokeStyle='rgba(255,255,255,.6)';g.lineWidth=2;g.beginPath();g.moveTo(X(st.h),t);g.lineTo(X(st.h),t+h);g.stroke();
+  g.fillStyle=SCN.find(s=>s[0]==st.sc)[2];g.beginPath();g.arc(X(st.h),Y(pmin(st.sc)[st.h]),7,0,7);g.fill()}
+ function draw(){const s=SIM[st.sc][st.h];
+  document.querySelectorAll('.sc').forEach(b=>b.classList.toggle('on',b.dataset.k==st.sc));
+  PL.forEach((l,i)=>{const d=DN[st.sc][i];l.setStyle({color:DNC[d],weight:DNW[d]*(map.getZoom()>=18?1.3:1),opacity:.95})});
+  NL.forEach((m,i)=>m.setStyle({fillColor:pc(s.P[i])}));
+  const mn=Math.min(...s.P);pm.textContent=f1(mn);pm.style.color=pc(mn);hrL.textContent=hh(st.h);chart();legend()}
+ map.on('zoomend',draw);legend();draw();window.__ok={SIM:()=>Object.fromEntries(SCN.map(s=>[s[0],Math.min(...pmin(s[0]))]))};
+}catch(e){document.body.insertAdjacentHTML('beforeend','<div id="err">Không đọc được dữ liệu: '+e.message+'</div>')}
+})();
 </script></body></html>
